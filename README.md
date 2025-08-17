@@ -173,3 +173,138 @@ Currently, these agents cannot collaborate directly, even though working togethe
         └◄──────────────────────────────────┘
 
 ```
+
+## Tasks: The Core Unit of Work
+
+### What Happens After Discovery?
+
+Work happens through tasks - the core unit of work in A2A.
+
+### Starting a Task
+
+When client wants something done, it sends a request to start a task using:
+
+- `tasks/send`
+- `tasks/send/subscribe`
+
+### Task Properties
+
+- Each task has a unique ID
+- Tasks can be in multiple states
+
+### Task States
+
+- Submitted - Task received and queued
+- Working - Agent actively processing
+- Input Required - Agent needs additional information
+- Completed - Task finished successfully
+- Failed - Task encountered error
+- Cancelled - Task terminated before completion
+
+### Task Structure
+
+#### Messages
+
+- Represent communication turns between client and agent
+- User Role: Messages from client
+- Agent Role: Messages from agent doing the work
+
+#### Parts
+
+Parts are fundamental content units within messages or artifacts.
+
+Three Types of Parts:
+
+1. Text Part: Plain text content
+2. File Part: Files with inline bytes or URI references
+3. Data Part: Structured JSON data (examples: forms)
+
+## Task Initiation Process
+
+### What the Client Does
+
+1. Generates unique task ID
+2. Sends initial user message
+3. Message is composed of parts
+4. Officially starts task on server
+
+###  Flow
+```
+1. DISCOVERY
+   Client asks: "What agents are available?"
+   Server responds with: Agent cards showing all available agents
+
+2. SELECTION  
+   Client thinks: "For this specific task, I need the flight booking agent"
+   Client chooses: The appropriate agent based on required capabilities
+
+3. TASK INITIATION
+   Client sends: Actual task request to the selected agent's endpoint
+
+```
+
+
+## Task Processing and Communication Modes
+
+## Artifacts: Structured Outputs
+
+### What are Artifacts?
+
+As the agent works on a task, it may produce artifacts - structured outputs such as:
+
+- Final answers
+- Generated files
+- Structured data
+
+### Artifact Structure
+
+Artifacts follow the same parts structure that's used by tasks and messages (text parts, file parts, data parts).
+
+## Server-to-Client Communication Methods
+
+How does the A2A server communicate updates to the client?
+
+### Processing Mode 1: Streaming Mode
+
+#### Streaming for Long-Running Tasks
+
+- **Purpose**: For tasks that take significant time to complete
+- **When servers support streaming**: Clients can use `tasks/send/subscribe` to enable streaming
+
+#### Server-Sent Events (SSE)
+
+- **Technology**: Server uses Server-Sent Events (SSE) to push updates
+- **Updates include**:
+  - Task status changes
+  - New messages from agent
+  - Artifacts being generated
+
+- **Benefit**: Client sees progress in real-time
+
+#### Push Notifications Alternative
+
+- **Setup**: Clients can set a webhook using `tasks/push/notification/set`
+- **Function**: Server calls back when new events occur
+- **Use Case**: Great for integrations where polling or streaming isn't practical
+
+### Processing Mode 2: Non-Streaming Mode
+
+#### Batch Processing
+
+- **How it works**: Server does all the work internally
+- **Response**: Replies with final result at the end
+- **Communication flow**: Direct from server to client
+- **Output**: Server sends back the completed task to client
+
+## Mode Selection
+
+### Factors for Choosing Processing Mode
+
+- Server capabilities: What the server supports
+- Use case requirements: Real-time updates vs final results
+- Integration needs: Technical constraints of the client system
+
+## Processing Flow Summary
+
+- **Streaming**: Real-time updates during task execution
+- **Non-streaming**: Complete results delivered at task completion
