@@ -160,7 +160,7 @@ Currently, these agents cannot collaborate directly, even though working togethe
    Multiple agents can work together through their servers
 
 ## Visual Flow
-
+```
 ┌─────────────┐    1. Discovery     ┌─────────────┐
 │  A2A Client │────────────────────►│ A2A Server  │
 │             │◄────────────────────│             │
@@ -171,3 +171,5 @@ Currently, these agents cannot collaborate directly, even though working togethe
         │                                   │
         │         3. Results                │
         └◄──────────────────────────────────┘
+
+```
