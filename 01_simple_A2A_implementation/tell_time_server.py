@@ -84,7 +84,7 @@ def handle_task():
             task["message"],  # Include the original user message for context
             {
                 "role": "agent",              # This message is from the agent
-                "parts": [{"text": reply_text}]  # Reply content in text format
+                "parts": [{"text": reply_text}]   # Reply content in text format
             }
         ]
     })
