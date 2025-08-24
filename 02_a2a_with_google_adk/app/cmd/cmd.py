@@ -102,5 +102,5 @@ async def cli(agent: str, session: str, history: bool):
 # -----------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    # Run the async `cli()` function inside the event loop
+    # Run the async `cli()` function  inside the event loop
     asyncio.run(cli())
